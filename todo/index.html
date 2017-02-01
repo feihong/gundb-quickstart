@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Todo - GUN</title>
+</head>
+
+<body>
+<h1>Todo</h1>
+
+<form>
+	<input><button>Add</button>
+</form>
+
+<ul></ul>
+
+<!-- SCRIPTS -->
+<script src='http://code.jquery.com/jquery-3.1.1.min.js'></script>
+<script src='/node_modules/gun/gun.js'></script>
+<script>
+$('form input')[0].focus()
+
+let gun = Gun().get('todo/items')
+
+$('form').on('submit', function(event){
+	event.preventDefault()
+  let text = $('input').val()
+  gun.set({text: text})		// gun.set() actually adds an object to a set
+	$('input').val('')
+})
+
+// Use double click to delete a todolist item.
+$('body').on('dblclick', 'li', function(event) {
+	gun.path(this.id).put(null)
+})
+
+gun.map().on(function(item, id) {
+	console.log(item, id)
+	// gun.path(id).put(null)
+	let li = $('#' + id).get(0) || $('<li>').attr('id', id).appendTo('ul')
+	if (item) {
+		$(li).text(item.text)
+	} else {
+		$(li).hide()
+	}
+})
+</script>
+</body>
+</html>

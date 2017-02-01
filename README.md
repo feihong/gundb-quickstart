@@ -20,6 +20,8 @@ inv serve
 
 ## Notes
 
+I can't get the Todo example to work with gun 0.5.x. I get the error "too much recursion" when calling `gun.set()`.
+
 Unlike other graph databases, GUN does not have a declarative query language.
 
 The documentation is pretty bad.
