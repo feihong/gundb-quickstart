@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Hello World - GUN</title>
+</head>
+
+<body>
+
+<p>Submit something in the form and watch the value update</p>
+<form>
+  <input>
+  <button>Submit</button>
+</form>
+<br>
+<div id='content'>?</div>
+
+<!-- SCRIPTS -->
+<script src='http://code.jquery.com/jquery-3.1.1.min.js'></script>
+<script src='node_modules/gun/gun.js'></script>
+
+<script>
+$('input')[0].focus()
+
+// We're not connecting to any peers
+// just yet...
+let peers = []
+let gun = Gun(peers)
+
+// Create an interface for the `greetings`
+// key, storing it in a variable.
+let greetings = gun.get('greetings')
+
+// Update the value on `greetings`.
+greetings.put({message: 'Hello World'})
+
+// Read the value and listen for
+// any changes.
+greetings.on(data => {
+  $('#content').text(data.message)
+})
+
+$('form').on('submit', function(evt) {
+  evt.preventDefault()
+  greetings.put({message: $('input').val()})
+})
+</script>
+
+</body>
+</html>
